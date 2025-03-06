@@ -1,0 +1,40 @@
+<script>
+    $(document).ready(function() {
+        const postForm = document.getElementById("postForm")
+        const message = document.getElementById("message")
+        const customFile = document.getElementById("customFile")
+        const linkyoutube = document.getElementById("linkyoutube")
+        const postStatusLoader = document.getElementById("postStatusLoader")
+        console.log(customFile.value)
+
+        postForm.addEventListener("submit", (e) => {
+            var param = document.createElement("p");
+            e.preventDefault();
+            var ajaxReq = $.ajax({
+                url: "/createPost/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    postemail: "<%=userSession.email%>",
+                    postavatar: "<%=userSession.image%>",
+                    postfullname: "<%=userSession.displayName%>",
+                    postdescription: message.value,
+                    postimage: customFile.value.split("\\").pop(),
+                    postrole: "<%=userSession.role%>",
+                    postlinkyoutube: linkyoutube.value,
+                }
+
+            })
+            ajaxReq.success(function(data) {
+                console.log(data)
+
+                window.location = "/";
+
+                message.value = "";
+                customFile.value = "";
+                linkyoutube.value = "";
+            });
+
+        });
+    })
+</script>
